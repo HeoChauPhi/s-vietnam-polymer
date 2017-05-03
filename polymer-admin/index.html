@@ -20,15 +20,8 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   <script src="../bower_components/webcomponentsjs/webcomponents.min.js"></script>
 
-  <!-- Admin Layout page -->
-  <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-  <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-  <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-  <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-
-  <!-- Menu Dashboard -->
-  <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+  <!-- Admin Dashboard -->
+  <link rel="import" href="templates/layout/admin-dashboard.html">
 
   <style is="custom-style">
     body {
@@ -36,64 +29,10 @@
       font-family: 'arial', san-serif;
       margin: 0;
     }
-    app-toolbar {
-      background-color: #4285f4;
-      color: #fff;
-    }
-    app-drawer {
-      --app-drawer-content-container: {
-        background-color: #B0BEC5;
-      }
-    }
-    app-drawer:not(#endDrawer) {
-      --app-drawer-width: 200px;
-    }
-
-    iron-selector > * {
-      padding: 8px;
-    }
-
-    .horizontal-section {
-      padding: 0;
-    }
-
-    .iron-selected {
-      background-color: var(--google-blue-500);
-      color: white;
-    }
   </style>
-
 
 </head>
 <body>
-  <app-drawer-layout>
-
-    <app-drawer swipe-open>
-      <div class="horizontal-section">
-        <iron-selector selected="{{data.tabName}}" attr-for-selected="key">
-          <div key="dashboard">Dashboard</div>
-          <div key="pages">Pages</div>
-          <div key="content-type">Content Types</div>
-          <div key="order">Order</div>
-          <div key="zoho-setting">Zoho Setting</div>
-          <div key="payment-setting">Payment Setting</div>
-          <div key="setting">Setting</div>
-        </iron-selector>
-      </div>
-    </app-drawer>
-
-    <app-drawer id="endDrawer" align="end" swipe-open></app-drawer>
-
-    <app-toolbar>
-      <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-      <div main-title>S-VietNam Travel Dashboard</div>
-      <paper-icon-button icon="account-box" onclick="document.getElementById('endDrawer').toggle();"></paper-icon-button>
-    </app-toolbar>
-
-    <main selected='{{data.tabName}}' attr-for-selected='key'>
-      <dashboard key="dashboard">Main Dashboard</dashboard>
-    </main>
-
-  </app-drawer-layout>
+  <admin-dashboard></admin-dashboard>
 </body>
 </html>

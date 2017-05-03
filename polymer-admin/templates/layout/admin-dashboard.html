@@ -1,0 +1,144 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<!-- Admin Layout page -->
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../../../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../../bower_components/app-route/app-route.html">
+
+<!-- Menu Dashboard -->
+<link rel="import" href="../../../bower_components/iron-selector/iron-selector.html">
+<!-- Main Dashboard -->
+<link rel="import" href="../../../bower_components/iron-pages/iron-pages.html">
+
+
+<dom-module id="admin-dashboard">
+   <style is="custom-style">
+      app-toolbar {
+        background-color: #4285f4;
+        color: #fff;
+      }
+      app-drawer {
+        --app-drawer-content-container: {
+          background-color: #B0BEC5;
+        }
+      }
+      app-drawer:not(#endDrawer) {
+        --app-drawer-width: 200px;
+      }
+
+      iron-selector > * {
+        padding: 8px;
+      }
+
+      .horizontal-section {
+        padding: 0;
+      }
+
+      .iron-selected {
+        background-color: var(--google-blue-500);
+        color: white;
+      }
+
+      main {
+        padding: 20px;
+      }
+    </style>
+
+  <template>
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/polymer-admin/:page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+    <app-drawer-layout>
+
+      <app-drawer swipe-open>
+        <app-toolbar>Menu</app-toolbar>
+        <div class="horizontal-section">
+          <iron-selector selected="[[page]]" attr-for-selected="key" class="drawer-list" role="navigation">
+            <template is="dom-repeat" items="{{navigation}}">
+              <div class="menu-item"><a href="/polymer-admin/{{item.key}}" key="{{item.key}}">{{item.label}}</a></div>
+            </template>
+          </iron-selector>
+        </div>
+      </app-drawer>
+
+      <app-drawer id="endDrawer" align="end" swipe-open></app-drawer>
+
+      <app-toolbar>
+        <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+        <div main-title>S-VietNam Travel <span style="text-transform: capitalize;">{{page}}</span> Dashboard</div>
+        <paper-icon-button icon="account-box" onclick="document.getElementById('endDrawer').toggle();"></paper-icon-button>
+      </app-toolbar>
+
+      <main>
+        <iron-pages
+          selected="[[page]]"
+          attr-for-selected="key"
+          fallback-selection="page404"
+          role="main">
+          <dashboard-main key="main"></dashboard-main>
+          <dashboard-pages key="pages"></dashboard-pages>
+          <dashboard-content-type key="content-type"></dashboard-content-type>
+          <dashboard-order key="order"></dashboard-order>
+          <dashboard-zoho-setting key="zoho-setting"></dashboard-zoho-setting>
+          <dashboard-payment-setting key="payment-setting"></dashboard-payment-setting>
+          <dashboard-setting key="setting"></dashboard-setting>
+          <page-404 key="page404"></page-404>
+        </iron-pages>
+      </main>
+
+    </app-drawer-layout>
+  </template>
+  
+  <script>
+    Polymer({
+      is: 'admin-dashboard',
+
+      properties: {
+        page: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged',
+        },
+      },
+
+      observers: [
+        '_routePageChanged(routeData.page)',
+      ],
+
+      _routePageChanged: function(page) {
+        this.page = page || 'main';
+      },
+
+      _pageChanged: function(page) {
+        // Load page import on demand. Show 404 page if fails
+
+        var resolvedPageUrl = this.resolveUrl('../pages/dashboard-' + page + '.html');
+        this.importHref(resolvedPageUrl, null, this._showPage404, true);
+      },
+
+      _showPage404: function() {
+        this.page = 'page404';
+      },
+
+      ready: function() {
+        this.navigation = [
+          {label: 'Dashboard', key: 'main'},
+          {label: 'Pages', key: 'pages'},
+          {label: 'Content Types', key: 'content-type'},
+          {label: 'Order', key: 'order'},
+          {label: 'Zoho Setting', key: 'zoho-setting'},
+          {label: 'Payment Setting', key: 'payment-setting'},
+          {label: 'Setting', key: 'setting'},
+        ];
+      }
+    })
+  </script>
+</dom-module>
