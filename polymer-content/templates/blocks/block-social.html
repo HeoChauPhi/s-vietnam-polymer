@@ -1,0 +1,30 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="block-social">
+  <template>
+    <style>
+
+    </style>
+
+    <ul class="social-items">
+      <template is="dom-repeat" items="{{social}}">
+        <li class="social-item"><a href="{{item.url}}"><i class="fa fa-{{item.icon}}">{{item.icon}}</i></a></li>
+      </template>
+    </ul>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'block-social',
+
+      ready: function() {
+        this.social = [
+          {icon: 'facebook', url: 'facebook'},
+          {icon: 'twitter', url: 'twitter'},
+          {icon: 'google-plus', url: 'google-plus'},
+          {icon: 'youtube', url: 'youtube'},
+        ];
+      }
+    });
+  </script>
+</dom-module>

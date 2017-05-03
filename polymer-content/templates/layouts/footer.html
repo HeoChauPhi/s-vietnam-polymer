@@ -1,0 +1,40 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../blocks/block-contact-us.html">
+<link rel="import" href="../blocks/block-menu-sitemap.html">
+<link rel="import" href="../blocks/block-facebook-fanpage.html">
+<link rel="import" href="../blocks/block-social.html">
+<link rel="import" href="../blocks/block-copyright.html">
+
+<dom-module id="base-footer">
+  <template>
+    <style>
+
+    </style>
+
+    <footer-panel>
+      <footer-panel-first>
+        <block-contact-us></block-contact-us>
+      </footer-panel-first>
+
+      <footer-panel-seccond>
+        <block-menu-sitemap></block-menu-sitemap>
+      </footer-panel-seccond>
+
+      <footer-panel-third>
+        <block-facebook-fanpage></block-facebook-fanpage>
+      </footer-panel-third>
+    </footer-panel>
+
+    <footer>
+      <block-social></block-social>
+      <block-copyright></block-copyright>
+      <chatbox></chatbox>
+    </footer>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'base-footer',
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,37 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="block-menu-sitemap">
+  <template>
+    <style>
+
+    </style>
+
+    <h2 class="block-title">Lien ket</h2>
+    <div class="block-inner">
+      <ul class="menu">
+        <template is="dom-repeat" items="{{sitemap}}">
+          <li><a href="{{item.url}}">{{item.label}}</a></li>
+        </template>
+      </ul>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'block-menu-sitemap',
+
+      ready: function() {
+        this.sitemap = [
+          {label: 'Chung toi', url: 'about-us'},
+          {label: 'PMS - Mien phi', url: 'free-pms'},
+          {label: 'Thong tin can biet', url: 'info'},
+          {label: 'Dieu kien & Dieu khoan', url: 'condition'},
+          {label: 'Quy che hoat dong', url: 'active-mode'},
+          {label: 'Cau hoi thuong gap', url: 'answer-quetion'},
+          {label: 'Doi tac & Lien ket', url: 'partner'},
+          {label: 'Vietnam Airline', url: 'https://www.vietnamairlines.com/'},
+        ];
+      }
+    });
+  </script>
+</dom-module>

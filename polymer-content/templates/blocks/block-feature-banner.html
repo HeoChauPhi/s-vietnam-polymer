@@ -1,0 +1,164 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../../bower_components/juicy-jsoneditor/juicy-jsoneditor.html">
+<link href="../../../bower_components/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+
+<dom-module id="block-feature-banner">
+  <template>
+
+    <iron-ajax
+      auto
+      url="http://localhost:8080/getRecords"
+      handle-as="json"
+      last-response="{{ajaxResponse}}"></iron-ajax>
+
+    <template is="dom-repeat" items="{{ZohoConvertJson('http://localhost:8080/getRecords')}}">
+      <div class="feature-banner-item">
+        <div class="feature-banner-media">
+          <template is="dom-if" if="{{item.Banner_Image}}">
+            <img src="{{item.Banner_Image}}">
+          </template>
+          <template is="dom-if" if="{{item.Banner_Video}}">
+            <div id="muteYouTubeVideoPlayer"></div>
+            <script async src="https://www.youtube.com/iframe_api"></script>
+            <script>
+              function onYouTubeIframeAPIReady() {
+                var player;
+                player = new YT.Player('muteYouTubeVideoPlayer', {
+                  videoId: '{{youtubeID(item.Banner_Video)}}', // YouTube Video ID
+                  width: 560,               // Player width (in px)
+                  height: 316,              // Player height (in px)
+                  playerVars: {
+                    autoplay: 1,        // Auto-play the video on load
+                    controls: 0,        // Show pause/play buttons in player
+                    showinfo: 0,        // Hide the video title
+                    modestbranding: 1,  // Hide the Youtube Logo
+                    loop: 1,            // Run the video in a loop
+                    fs: 0,              // Hide the full screen button
+                    cc_load_policy: 0, // Hide closed captions
+                    iv_load_policy: 3,  // Hide the Video Annotations
+                    autohide: 1        // Hide video controls when playing
+                  },
+                  events: {
+                    onReady: function(e) {
+                      e.target.mute();
+                    }
+                  }
+                });
+              }
+            </script>
+          </template>
+        </div>
+        <div class="feature-banner-content">
+          <div class="feature-banner-title">{{item.Banner_Title}}</div>
+          <div class="feature-banner-desc">{{item.Banner_Description}}</div>
+        </div>
+      </div>
+    </template>
+
+    <table align="center" width="790px" height="100%">
+      <tr>
+        <!-- <td><input type="text" id="url" style="width: 100%;" value="//crm.zoho.com/crm/private/json/CustomModule1/getRecords?authtoken=60c422e0a8cedee2126e828038186ca0&scope=crmapi&selectColumns=CustomModule1(Feature Banner Name,Banner Video,Banner Image,Banner Title,Banner Description)"></td> 60c422e0a8cedee2126e828038186ca0-->
+        <td><input type="text" id="url" style="width: 100%;" value="/getRecords"></td>
+      </tr>
+      <tr>
+        <td id="jsoneditor"></td>
+      </tr>
+    </table>
+
+    <script>
+      var container = document.getElementById('jsoneditor');
+      var editor = new JSONEditor(container);
+      var url = document.getElementById("url").value;
+      $.ajax({
+        'type': 'GET',
+        'url': url,
+        'dataType': 'json',
+        'success': function (doc) {
+          editor.set(doc);
+        }
+      });
+    </script>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'block-feature-banner',
+
+      /*properties: {
+        bannerreturn: {
+          type: Array,
+          value: function() {
+            var url = 'http://localhost:8080/getRecords';
+            var mydata = [];
+
+            $.ajax({
+              url: url,
+              async: false,
+              dataType: 'json',
+              success: function (json) {
+                var arr_return = [];
+                var items = json.response.result.CustomModule1.row;
+
+                $.each(items, function(key, val) {
+                  var item_ojb = [];
+                  var items_val = val.FL;
+
+                  $.each(items_val, function(key, val) {
+                    var item_val = val.val.replace(" ", "_");
+                    var item_content = val.content;
+
+                    item_ojb[item_val] = val.content;
+                  });
+
+                  arr_return.push(item_ojb);
+                });
+                mydata = arr_return;
+              }
+            });
+
+            console.log(mydata);
+            return mydata;
+          }
+        }
+      },*/
+
+      youtubeID: function(url) {
+        var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+        return videoid[1];
+      },
+
+      ZohoConvertJson: function(url) {
+        var mydata = [];
+
+        $.ajax({
+          url: url,
+          async: false,
+          dataType: 'json',
+          success: function (json) {
+            var arr_return = [];
+            var items = json.response.result.CustomModule1.row;
+
+            $.each(items, function(key, val) {
+              var item_ojb = [];
+              var items_val = val.FL;
+
+              $.each(items_val, function(key, val) {
+                var item_val = val.val.replace(" ", "_");
+                var item_content = val.content;
+
+                item_ojb[item_val] = val.content;
+              });
+
+              arr_return.push(item_ojb);
+            });
+            mydata = arr_return;
+          }
+        });
+
+        console.log(mydata);
+        return mydata;
+      }
+    });
+  </script>
+</dom-module>

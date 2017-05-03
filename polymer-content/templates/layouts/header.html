@@ -1,0 +1,47 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="base-header">
+  <template>
+    <style>
+
+    </style>
+
+    <nav-header-mobbile class="only-small-device">
+      <nav-menu-icon></nav-menu-icon>
+      <logo><a href="home"><img src="../../images/logo.png"></a></logo>
+      <nav-language-icon></nav-language-icon>
+    </nav-header-mobbile>
+
+    <dom-container class="container">
+      <nav-header class="only-desktop">
+        <nav>
+          <logo><a href="home"><img src="../../images/logo.png"></a></logo>
+        </nav>
+        <navigation>
+          <ul class="menu">
+            <template is="dom-repeat" items="{{navbar}}">
+              <li><a href="{{item.url}}">{{item.label}}</a></li>
+            </template>
+          </ul>
+        </navigation>
+      </nav-header>
+    </dom-container>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'base-header',
+
+      ready: function() {
+        this.navbar = [
+          {label: 'Trang chu', url: 'home'},
+          {label: 'Khach san', url: 'holtel'},
+          {label: 'Ve may bay', url: 'flight-ticket'},
+          {label: 'Tu van Visa', url: 'visa-support'},
+          {label: 'Tour', url: 'tour'},
+          {label: 'Lien he', url: 'contact-us'},
+        ];
+      }
+    });
+  </script>
+</dom-module>

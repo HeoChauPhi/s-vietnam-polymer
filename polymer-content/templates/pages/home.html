@@ -1,0 +1,51 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../blocks/block-feature-banner.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="home-page" layout vertical>
+  <style>
+    .layout {
+      background-color: #333;
+      padding: 10px;
+    }
+
+    .layout div {
+      background-color: #eee;
+      margin: 10px;
+    }
+
+    .flex-horizontal-with-ratios {
+      @apply(--layout-horizontal);
+    }
+    .flex-horizontal {
+      @apply(--layout-horizontal);
+    }
+    .flexchild {
+      @apply(--layout-flex);
+    }
+    .flex2child {
+      @apply(--layout-flex-2);
+    }
+    .flex3child {
+      @apply(--layout-flex-3);
+    }
+  </style>
+
+  <template>
+    <h1 class="page-title">Home</h1>
+
+    <div class="layout flex-horizontal-with-ratios">
+      <div class="flex2child">One</div>
+      <div class="flex3child">Two</div>
+      <div class="flex2child">Three</div>
+    </div>
+
+    <block-feature-banner></block-feature-banner>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'home-page',
+    });
+  </script>
+</dom-module>
