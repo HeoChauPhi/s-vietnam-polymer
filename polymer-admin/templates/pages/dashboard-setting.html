@@ -1,12 +1,142 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/dom-if-else/dom-if-else.html">
+<link rel="import" href="../../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+
+<link rel="import" href="../../../bower_components/juicy-jsoneditor/juicy-jsoneditor.html">
+<link href="../../../bower_components/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
 
 <dom-module id="dashboard-setting">
 <template>
   <h2>Setting Dashboard</h2>
+
+  <template is="dom-repeat" items={{getjson("datajson/dashboard-setting.json")}}>
+    <div>
+      <!-- <template is="dom-if" if="{{isFormat(item.logo.status, 1)}}">
+      <paper-checkbox checked>Checked</paper-checkbox>
+      </template> -->
+      <h2>Logo Setting</h2>
+      <template id="domIf" is="dom-if-else" if="{{isFormat(item.logo.status, 1)}}">
+        <if-then>
+          <paper-checkbox checked on-click="showMe">Checked</paper-checkbox>
+        </if-then>
+        <if-else>
+          <paper-checkbox on-click="showMe">Checked</paper-checkbox>
+        </if-else>
+      </template>
+
+      <div>
+      <paper-input label="Logo" value="{{item.logo.value}}" disabled hidden$="{{hide}}"></paper-input>
+      </div>
+    </div>
+
+    <div>
+      <template id="domIf" is="dom-if-else" if="{{isFormat(item.customlogo.status, 1)}}">
+        <if-then>
+          <paper-checkbox checked on-click="showMe">Checked</paper-checkbox>
+        </if-then>
+        <if-else>
+          <paper-checkbox on-click="showMe">Checked</paper-checkbox>
+        </if-else>
+      </template>
+      <div hidden$="{{hide}}">{{item.customlogo.value}}</div>
+    </div>
+
+    <div>
+      <template id="domIf" is="dom-if-else" if="{{isFormat(item.sitename.status, 1)}}">
+        <if-then>
+          <paper-checkbox checked>Checked</paper-checkbox>
+        </if-then>
+        <if-else>
+          <paper-checkbox>Checked</paper-checkbox>
+        </if-else>
+      </template>
+      <div>{{item.sitename.value}}</div>
+    </div>
+
+    <div>
+      <template id="domIf" is="dom-if-else" if="{{isFormat(item.homepage.status, 1)}}">
+        <if-then>
+          <paper-checkbox checked>Checked</paper-checkbox>
+        </if-then>
+        <if-else>
+          <paper-checkbox>Checked</paper-checkbox>
+        </if-else>
+      </template>
+      <div>{{item.homepage.value}}</div>
+    </div>
+  </template>
+
+  <table align="center" width="790px" height="100%">
+    <tr>
+      <td><input type="text" id="url" style="width: 100%;" value="datajson/dashboard-setting.json"></td>
+    </tr>
+    <tr>
+      <td id="jsoneditor"></td>
+    </tr>
+  </table>
+
+  <script>
+    var container = document.getElementById('jsoneditor');
+    var editor = new JSONEditor(container);
+    var url = document.getElementById("url").value;
+    $.ajax({
+      'type': 'GET',
+      'url': url,
+      'dataType': 'json',
+      'success': function (doc) {
+        editor.set(doc);
+      }
+    });
+  </script>
 </template>
 <script>
   Polymer({
-    is: 'dashboard-setting'
+    is: 'dashboard-setting',
+
+    properties: {
+      hide: {
+        type: Boolean,
+        value: true // init the value to true so it will be hidden on page load
+      }
+    },
+
+    getjson: function(url) {
+      var mydata = [];
+
+      $.ajax({
+        url: url,
+        async: false,
+        dataType: 'json',
+        success: function (json) {
+          //console.log(json);
+          mydata = json;
+        }
+      });
+
+      console.log(mydata);
+      return mydata;
+    },
+
+    getKeyValue: function(obj) {
+      console.log(obj);
+      return _.map(obj, function(value, key) {
+        return {
+          key: key,
+          value: value
+        };
+      });
+    }, 
+
+    isFormat: function(code, format) {
+      return code === format;
+    },
+
+    showMe: function() {
+      this.hide = !this.hide
+    }
   })
 </script>
 </dom-module>

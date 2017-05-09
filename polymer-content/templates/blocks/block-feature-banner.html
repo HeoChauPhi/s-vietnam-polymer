@@ -12,7 +12,7 @@
       handle-as="json"
       last-response="{{ajaxResponse}}"></iron-ajax>
 
-    <template is="dom-repeat" items="{{ZohoConvertJson('http://localhost:8080/getRecords')}}">
+    <template is="dom-repeat" items="{{ZohoConvertJson('/getRecords')}}">
       <div class="feature-banner-item">
         <div class="feature-banner-media">
           <template is="dom-if" if="{{item.Banner_Image}}">

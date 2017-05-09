@@ -38,6 +38,7 @@ III. Menu Dashboard
   7.1. Logo
   7.2. Site Name
   7.3. Site Slogan
+  7.4. Home Page
 
 IV. Nav Admin
 1. Home page icon

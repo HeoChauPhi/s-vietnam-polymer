@@ -1,0 +1,18 @@
+[{
+  "logo": {
+    "status": 1,
+    "value": "/polymer-content/images/logo.png"
+  },
+  "customlogo": {
+    "status": 0,
+    "value": "heochaua"
+  },
+  "sitename": {
+    "status": 0,
+    "value": ""
+  },
+  "homepage": {
+    "status": 0,
+    "value": ""
+  }
+}]

@@ -31,6 +31,7 @@
       }
 
       iron-selector > * {
+        display: block;
         padding: 8px;
       }
 
@@ -38,13 +39,14 @@
         padding: 0;
       }
 
-      .iron-selected {
+      iron-selector .iron-selected {
         background-color: var(--google-blue-500);
         color: white;
       }
 
       main {
         padding: 20px;
+        color: #333;
       }
     </style>
 
@@ -52,7 +54,7 @@
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
-        pattern="/polymer-admin/:page"
+        pattern="#/:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
@@ -61,9 +63,9 @@
       <app-drawer swipe-open>
         <app-toolbar>Menu</app-toolbar>
         <div class="horizontal-section">
-          <iron-selector selected="[[page]]" attr-for-selected="key" class="drawer-list" role="navigation">
+          <iron-selector selected="{{page}}" attr-for-selected="key" class="drawer-list" role="navigation">
             <template is="dom-repeat" items="{{navigation}}">
-              <div class="menu-item"><a href="/polymer-admin/{{item.key}}" key="{{item.key}}">{{item.label}}</a></div>
+              <a href="#{{item.key}}" key="{{item.key}}">{{item.label}}</a>
             </template>
           </iron-selector>
         </div>
@@ -79,7 +81,7 @@
 
       <main>
         <iron-pages
-          selected="[[page]]"
+          selected="{{page}}"
           attr-for-selected="key"
           fallback-selection="page404"
           role="main">
@@ -119,6 +121,7 @@
 
       _pageChanged: function(page) {
         // Load page import on demand. Show 404 page if fails
+        //page = page.replace()
 
         var resolvedPageUrl = this.resolveUrl('../pages/dashboard-' + page + '.html');
         this.importHref(resolvedPageUrl, null, this._showPage404, true);
