@@ -11,67 +11,67 @@
 <dom-module id="dashboard-setting">
 <template>
   <h2>Setting Dashboard</h2>
+  <form method="post" action="//thoitiettoday.tk/polymer-admin/datajson/dashboard-setting.php" target="_submit">
+    <template is="dom-repeat" items={{getjson(urlreturn)}}>
 
-  <template is="dom-repeat" items={{getjson("datajson/dashboard-setting.json")}}>
-    <div>
-      <!-- <template is="dom-if" if="{{isFormat(item.logo.status, 1)}}">
-      <paper-checkbox checked>Checked</paper-checkbox>
-      </template> -->
-      <h2>Logo Setting</h2>
-      <template id="domIf" is="dom-if-else" if="{{isFormat(item.logo.status, 1)}}">
-        <if-then>
-          <paper-checkbox checked on-click="showMe">Checked</paper-checkbox>
-        </if-then>
-        <if-else>
-          <paper-checkbox on-click="showMe">Checked</paper-checkbox>
-        </if-else>
-      </template>
+      <div hidden$="{{disable}}">
+        <!-- <template is="dom-if" if="{{isFormat(item.logo.status, 1)}}">
+        <paper-checkbox checked>Checked</paper-checkbox>
+        </template> -->
+        <h4>Default Logo</h4>
+        <!-- <paper-input label="Logo" value="{{item.logo.value}}" disabled hidden$="{{hide}}"></paper-input> -->
+        <paper-input label="Logo" value="/polymer-content/images/logo.png" disabled></paper-input>
+        <paper-input label="Logo" name="logo_val" value="/polymer-content/images/logo.png" hidden></paper-input>
+        <img src="/polymer-content/images/logo.png">
+      </div>
 
       <div>
-      <paper-input label="Logo" value="{{item.logo.value}}" disabled hidden$="{{hide}}"></paper-input>
+        <h4>Custom Logo Setting</h4>
+        <paper-checkbox checked="{{item.customlogo.status}}" on-change="showMe">Checked</paper-checkbox>
+        <input type="checkbox" name="customlogo" checked="{{item.customlogo.status}}" hidden>
+        <paper-input label="Custom Logo" name="customlogo_val" value="{{item.customlogo.value}}" hidden$="{{hide}}"></paper-input>
       </div>
-    </div>
 
-    <div>
-      <template id="domIf" is="dom-if-else" if="{{isFormat(item.customlogo.status, 1)}}">
-        <if-then>
-          <paper-checkbox checked on-click="showMe">Checked</paper-checkbox>
-        </if-then>
-        <if-else>
-          <paper-checkbox on-click="showMe">Checked</paper-checkbox>
-        </if-else>
-      </template>
-      <div hidden$="{{hide}}">{{item.customlogo.value}}</div>
-    </div>
+      <div>
+        <h4>Site Name Setting</h4>
+        <paper-checkbox checked="{{item.sitename.status}}">Checked</paper-checkbox>
+        <input type="checkbox" name="sitename" checked="{{item.sitename.status}}" hidden>
+        <paper-input label="Sitename" name="sitename_val" value="{{item.sitename.value}}"></paper-input>
+      </div>
 
-    <div>
-      <template id="domIf" is="dom-if-else" if="{{isFormat(item.sitename.status, 1)}}">
-        <if-then>
-          <paper-checkbox checked>Checked</paper-checkbox>
-        </if-then>
-        <if-else>
-          <paper-checkbox>Checked</paper-checkbox>
-        </if-else>
-      </template>
-      <div>{{item.sitename.value}}</div>
-    </div>
+      <div>
+        <h4>Home Page Setting</h4>
+        <paper-checkbox checked="{{item.homepage.status}}">Checked</paper-checkbox>
+        <input type="checkbox" name="homepage" checked="{{item.homepage.status}}" hidden>
+        <paper-input label="Home Page" name="homepage_val" value="{{item.homepage.value}}"></paper-input>
+      </div>
+    </template>
+    <paper-button raised on-click="_submit">Submit</paper-button>
+    <paper-button raised on-click="_reset">Reset</paper-button>
+    <div class="output"></div>
+  </form>
 
-    <div>
-      <template id="domIf" is="dom-if-else" if="{{isFormat(item.homepage.status, 1)}}">
-        <if-then>
-          <paper-checkbox checked>Checked</paper-checkbox>
-        </if-then>
-        <if-else>
-          <paper-checkbox>Checked</paper-checkbox>
-        </if-else>
-      </template>
-      <div>{{item.homepage.value}}</div>
-    </div>
-  </template>
+  <script>
+    /*function _submit(event) {
+      Polymer.dom(event).localTarget.parentElement.submit();
+    }
+    function _reset(event) {
+      var form = Polymer.dom(event).localTarget.parentElement;
+      form.reset();
+    }*/
+    /*function _reset(event) {
+      var form = Polymer.dom(event).localTarget.parentElement
+      form.reset();
+      form.querySelector('.output').innerHTML = '';
+    }
+    basic.addEventListener('iron-form-submit', function(event) {
+      this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
+    });*/
+  </script>
 
   <table align="center" width="790px" height="100%">
     <tr>
-      <td><input type="text" id="url" style="width: 100%;" value="datajson/dashboard-setting.json"></td>
+      <td><input type="text" id="url" style="width: 100%;" value="//thoitiettoday.tk/polymer-admin/datajson/dashboard-setting.json"></td>
     </tr>
     <tr>
       <td id="jsoneditor"></td>
@@ -100,7 +100,15 @@
       hide: {
         type: Boolean,
         value: true // init the value to true so it will be hidden on page load
-      }
+      },
+      disable: {
+        type: Boolean,
+        value: false // init the value to true so it will be hidden on page load
+      },
+      urlreturn: {
+        type: String,
+        value: "//thoitiettoday.tk/polymer-admin/datajson/dashboard-setting.json"
+      },
     },
 
     getjson: function(url) {
@@ -116,12 +124,10 @@
         }
       });
 
-      console.log(mydata);
       return mydata;
     },
 
     getKeyValue: function(obj) {
-      console.log(obj);
       return _.map(obj, function(value, key) {
         return {
           key: key,
@@ -134,8 +140,26 @@
       return code === format;
     },
 
-    showMe: function() {
-      this.hide = !this.hide
+    showMe: function(event) {
+      if(event.target.checked) {
+        this.disable = !this.disable,
+        this.hide = !this.hide
+      } else {
+        this.disable = false,
+        this.hide = true
+      }
+    },
+
+    _submit: function(event) {
+      this.urlreturn = this.urlreturn;
+      Polymer.dom(event).localTarget.parentElement.submit();
+      console.log(this.urlreturn);
+    },
+    _reset: function(event) {
+      this.urlreturn = "//thoitiettoday.tk/polymer-admin/datajson/dashboard-setting-default.json";
+      Polymer.dom(event).localTarget.parentElement.submit();
+      //window.location.reload(true);
+      console.log(this.urlreturn);
     }
   })
 </script>
