@@ -48,7 +48,6 @@
     </template>
     <paper-button raised on-click="_submit">Submit</paper-button>
     <paper-button raised on-click="_reset">Reset</paper-button>
-    <div class="output"></div>
   </form>
 
   <script>
@@ -153,13 +152,14 @@
     _submit: function(event) {
       this.urlreturn = this.urlreturn;
       Polymer.dom(event).localTarget.parentElement.submit();
-      console.log(this.urlreturn);
+      this.urlreturn = "//thoitiettoday.tk/polymer-admin/datajson/dashboard-setting.json";
+      //console.log(this.urlreturn);
     },
     _reset: function(event) {
       this.urlreturn = "//thoitiettoday.tk/polymer-admin/datajson/dashboard-setting-default.json";
+      window.location.reload(true);
       Polymer.dom(event).localTarget.parentElement.submit();
-      //window.location.reload(true);
-      console.log(this.urlreturn);
+      //console.log(this.urlreturn);
     }
   })
 </script>
